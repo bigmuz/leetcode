@@ -2,10 +2,32 @@ namespace P49;
 
 public class Solution {
     public IList<IList<string>> GroupAnagrams(string[] strs) {
-        // TO-DO: counting solution
+        Dictionary<string, IList<string>> res = [];
+
+        foreach (var word in strs)
+        {
+            int[] charCount = new int[26]; // count each letter
+
+            foreach (var letter in word)
+            {
+                charCount[letter - 'a']++; // each char has a number, lowercase letters are numbered alphabetically, -a gives letter distance from a
+            }
+
+            string key = string.Join(",", charCount); // create key from letter counts (, to separate numbers)
+
+            if (res.TryGetValue(key, out var value))
+            {
+                value.Add(word);
+            }
+            else
+            {
+                res.Add(key, [word]);
+            }
+        }
+
+        return [.. res.Values];
     }
 }
-
 
 public class FirstSolution {
     public IList<IList<string>> GroupAnagrams(string[] strs) {
